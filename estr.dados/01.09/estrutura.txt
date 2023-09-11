@@ -1,0 +1,14 @@
+Estrutura de dados
+
+Dicionário:
+	Dicionário é o nome dado ao conjunto de dados dinamico em que cada elemento, chamado de chave, possui um valor associado.
+
+Pilhas e Filas:
+
+	Pilha é um conceito trazido da vida real, como exemplo temos uma pilha de pratos, usando uma política onde o ultimo termo a entrar,
+sempre será o primeiro a sair, assim facilitando o fluxo dos dados.
+	Um exemplo do uso de pilhas na programação é a pilha de funções, principalmente nas funções recursivas, onde a função e chamada
+e se repete diversas vezes.
+
+	A fila é como a fila da vida real, o primeiro a chegar é o primeiro a sair, o reverso da pilha, 
+
