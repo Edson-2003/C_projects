@@ -1,84 +1,57 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct
+
+typedef struct _pilha
 {
-	char nome[50];
-	int idade;
-}Pessoa;
+	int top;
+	int tam;
+	int *vet;
+}pilha;
 
 
-typedef struct nó{
-	Pessoa p;
-	struct nó *proximo;
-}Nó;
+void inicia(pilha *p)
+{
 
-Pessoa ler()
-{	
-	Pessoa p;
-	scanf("%d", &p.idade);
-	scanf("%s", &p.nome);
+	p = (pilha*) malloc(sizeof(pilha));
+	p->top = -1;	
 
-	return p;
+	scanf("%d", &p->tam);
+	p->vet = (int*) malloc(p->tam * sizeof(int));
+}
+
+int p_cheia(pilha *p)
+{
+	return((p->top) == (p->tam-1));
 }
 
 
-Nó* push(Nó *top)
+int p_vazia(pilha *p)
 {
-	Nó novo = malloc(sizeof(Nó));
+	return((p->top)==(-1));
+}
 
-	if(novo)
+
+
+void push(pilha *p, int key)
+{
+	if(p_cheia(p))
 	{
-		novo->p = ler();
-		novo->proximo = top;
-		
-		return novo;		
+		printf("pilha cheia");
 	}
 	else
 	{
-		printf("deu ruim");
-		
-		return NULL;
-	}
-}
-
-Nó* pop(Nó **top)
-{
-	if(top != NULL)
-	{
-		Nó *remover = *top;
-		*top = remover->proximo
-		
-		return remover;
-	}
-	else
-	{
-		printf("deu ruim");
-		return NULL;
+		p->top = p->top + 1;
+		p->vet[p->top] = key;	
 	}
 }
 
 
 
-void imprime no(Nó p)
-{ 
-	printf("%d %s", p.idade, p.nome);
-}
 void main()
 {
-	Nó *top = NULL;
-  top = push(top);	
-  top = push(top);
-  top = push(top);
-
-	remover = pop(&top);
-	if(remover)
-	{
-		printf("elemento removido com sucesso");		
-	}
-	else
-	{
-		printf("sem elementos a remover");
-	}
-	
+	pilha *p;
+	inicia(p);
+	push(p,1);
 }
+
