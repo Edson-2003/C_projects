@@ -23,6 +23,24 @@ void insert_node(List *l, int n)
 
 }
 
+void insert_on_end(Node *node, int n)
+{
+	if(node->next != NULL)
+	{
+		insert_on_end(node->next, n);
+	}
+	else
+	{
+		Node *new = (Node*) malloc(sizeof(Node));
+		new->value = n;
+		new->next = NULL;
+	 	node->next = &new;	
+	}
+}
+
+
+
+
 void print_list(List *l)
 {
 	Node *start = l->start;
