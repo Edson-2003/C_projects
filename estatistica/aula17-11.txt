@@ -1,0 +1,1 @@
+transforme um z score em um valor especifico.
