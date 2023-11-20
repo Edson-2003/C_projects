@@ -1,70 +1,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct node
+
+struct node
 {
 	int value;
 	struct node *next;
-}Node;
+};
 
-typedef struct
+struct list
 {
-	Node *start;
-	int size;
-}List;
+	struct node *head;	
+};
 
-void insert_node(List *l, int n)
+struct list
+_create_mylist()
 {
-	Node *new = (Node*)malloc(sizeof(Node));
-	new->value = n;
-	new->next = l->start;
-	l->start = new; 
-	l->size++;
-
-}
-
-void insert_on_end(Node *node, int n)
-{
-	if(node->next != NULL)
+	struct list mylist = (struct list*) malloc(sizeof(struct list));
+	if(mylist->head != NULL)
 	{
-		insert_on_end(node->next, n);
+		mylist->head = NULL;
+		
 	}
-	else
-	{
-		Node *new = (Node*) malloc(sizeof(Node));
-		new->value = n;
-		new->next = NULL;
-	 	node->next = &new;	
-	}
+
 }
 
 
 
-
-void print_list(List *l)
+struct list
+_init(struct list *mylist)
 {
-	Node *start = l->start;
-	while(start != NULL)
+	if(mylist->head != NULL)
 	{
-		printf("%d ", start->value);
-		start = start->next;
+		
 	}
-	printf("\n\n");
+
 }
 
 
 
-void main()
+
+int 
+main()
 {
-	List *l;
-	int option, value;
-	l = (List*) malloc(sizeof(List));
-	l->start = NULL;
-	l->size = 0;
-	scanf("%d", &value);
-	
-	insert_node(l,value);
-	insert_node(l,value);
-	insert_node(l,value);
-	print_list(l);
+
+
+	return 0;
 }
