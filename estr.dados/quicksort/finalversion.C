@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-//#include <chrono>
+#include <iostream>
+#include <chrono>
+//the creator: Edson Augusto Pereira Ferreira
+
+//fundamental functions
+
+
 int*
 int_init(int size)
 {
@@ -9,6 +15,7 @@ int_init(int size)
 
 	return myvector;
 }
+
 
 double*
 double_init(int mysize)
@@ -43,17 +50,7 @@ generatemyvector(int *myvector, int mysize)
 }
 
 
-void
-showmyresults(double *myvector, int mysize)
-{
-	printf("my results\n");
-	
-	printf("X | time\n");	
-	for(int i = 0; i < mysize; i++)
-	{
-		printf("%d | %.15lf\n", i + 1, myvector[i]);
-	}
-}
+//the first question
 
 
 void
@@ -66,14 +63,13 @@ swap(int *a, int *b)
 
 
 void
-insertionsort(int *myvector, int size)
+insertionsort(int *myvector, int low, int high)
 {
 	int key;
-  for(int i = 1; i < size; i++) 
+  for(int i = low-1; i < high; i++) 
 	{
 		key = myvector[i];
     int j = i - 1;
-
 		while((j >= 0) && (myvector[j] > key)) 
 		{
 			swap(&myvector[j+1], &myvector[j]);
@@ -98,8 +94,7 @@ partition(int *myvector, int low, int high)
 		}
 	}
 	swap(&myvector[i + 1], &myvector[high]);
-
-	return i++;
+	return i+1;
 }
 
 
@@ -109,7 +104,6 @@ randomized_partition(int *myvector, int low, int high)
 	srand(time(0));
 	int randon = low + rand() % high - low;
 	swap(&myvector[randon], &myvector[low]);
-	
 	return partition(myvector, high, low);
 }
 
@@ -121,12 +115,11 @@ randomized_quicksort_with_x(int *myvector, int low, int high, int x)
 	{
 		if((high - low) <= x)
 		{
-			insertionsort(myvector, high + 1);
+			insertionsort(myvector, low, high);
 		}
 		else
 		{
 			int pivot = randomized_partition(myvector, low, high);
-			
 			randomized_quicksort_with_x(myvector, low, pivot - 1, x);
 			randomized_quicksort_with_x(myvector, pivot + 1, high, x);
 		}
@@ -134,57 +127,64 @@ randomized_quicksort_with_x(int *myvector, int low, int high, int x)
 }
 
 
-double*
-measuring_time(int *myvector, int mysize, double *total_time)
-{
-	clock_t start_measuring, end_measuring;
-	double *mytime = NULL;
-	mytime = double_init(100);
-	
-	start_measuring = clock();
-	for(int i = 1; i <= 100; i++)
-	{	
-		clock_t start_function, end_function;
-		start_function = clock();
-		randomized_quicksort_with_x(myvector, 0, mysize-1, i + 1);
-		end_function = clock();
-		mytime[i] = ((double) (end_function - start_function)) / CLOCKS_PER_SEC;
-	}
+//the secund question
 
-	end_measuring = clock();
-	*total_time = ((double) (end_measuring - start_measuring)) / CLOCKS_PER_SEC;
-	return mytime;
-}
-/*
 
 double*
 measuring_time(int *myvector, int mysize)
 {
-	
 	double *mytime = NULL;
 	mytime = double_init(100);
-	for(int i = 1; i <= 100; i++)
+	for(int i = 0; i <= 100; i++)
 	{	
-		auto start = high_resolution_clock::now();
+		auto start = std::chrono::high_resolution_clock::now();
 		randomized_quicksort_with_x(myvector, 0, mysize-1, i + 1);
-		auto stop = high_resolution_clock::now();
-		mytime[i] = ((double) (end_function - start_function)) / CLOCKS_PER_SEC;
+		auto stop = std::chrono::high_resolution_clock::now();
+		auto  duration = std::chrono::duration<double>(stop - start);
+		mytime[i] = duration.count();	
 	}
 
 	return mytime;
 }
-*/
+
+// the function show the final result of measuring and the best time
+
+
+void
+showmyresults(double *myvector, int mysize)
+{
+	printf("my results in secund\n");
+	printf("X | time\n");	
+	double thebest = myvector[0];
+	int index = 0;
+	
+
+	for(int i = 0; i < mysize; i++)
+	{
+		if(i > 0)
+		{
+			if(thebest > myvector[i])
+			{
+				thebest = myvector[i];
+				index = i + 1;
+			}	
+		}
+		printf("%d | %.9lf\n", i + 1, myvector[i]);
+	
+	}
+	printf("x value %d, the best time %.9lf\n", index, thebest);
+}
+
+
 int 
 main()
 {
 	int mysize = 1000;
-	//scanf("%d", &mysize);
 	int *myvector = NULL;
 	double *mytime = NULL;
 	myvector = int_init(mysize);
 	generatemyvector(myvector, mysize);
-	//randomized_quicksort_with_x(myvector, 0, mysize-1, 10);
-	mytime = measuring_time(myvector, mysize, &total_time);
+	mytime = measuring_time(myvector, mysize);
 	showmyresults(mytime, 100);
 	int_finish(myvector);
 	double_finish(mytime);

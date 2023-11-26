@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-//#include <chrono>
+#include <iostream>
+#include <chrono>
+
+
+//fundamental functions
 int*
 int_init(int size)
 {
@@ -42,19 +46,30 @@ generatemyvector(int *myvector, int mysize)
 	}	
 }
 
-
+// the function show the final result of measuring and the best time
 void
 showmyresults(double *myvector, int mysize)
 {
-	printf("my results\n");
-	
+	printf("my results in microsecunds\n");
+	double the_besttime = myvector[0];
+	int id = 0;	
 	printf("X | time\n");	
 	for(int i = 0; i < mysize; i++)
 	{
-		printf("%d | %.15lf\n", i + 1, myvector[i]);
+		if(i >= 0)
+		{
+			if(myvector[i] >= the_besttime)
+			{
+				the_besttime = myvector[i];
+				id = i;
+			}
+		}
+		printf("%d | %.9lf\n", i + 1, myvector[i]);
 	}
+	printf("the x for the best time %d, the time is %.9lf\n", id, the_besttime);
 }
 
+//the start of first question
 
 void
 swap(int *a, int *b)
@@ -133,15 +148,16 @@ randomized_quicksort_with_x(int *myvector, int low, int high, int x)
 	}
 }
 
+//the end of the first question
 
+/*
 double*
-measuring_time(int *myvector, int mysize, double *total_time)
+measuring_time(int *myvector, int mysize)
 {
 	clock_t start_measuring, end_measuring;
 	double *mytime = NULL;
 	mytime = double_init(100);
-	
-	start_measuring = clock();
+
 	for(int i = 1; i <= 100; i++)
 	{	
 		clock_t start_function, end_function;
@@ -151,12 +167,11 @@ measuring_time(int *myvector, int mysize, double *total_time)
 		mytime[i] = ((double) (end_function - start_function)) / CLOCKS_PER_SEC;
 	}
 
-	end_measuring = clock();
-	*total_time = ((double) (end_measuring - start_measuring)) / CLOCKS_PER_SEC;
 	return mytime;
 }
-/*
+*/
 
+//the start of the secund question
 double*
 measuring_time(int *myvector, int mysize)
 {
@@ -165,15 +180,17 @@ measuring_time(int *myvector, int mysize)
 	mytime = double_init(100);
 	for(int i = 1; i <= 100; i++)
 	{	
-		auto start = high_resolution_clock::now();
+		auto start = std::chrono::high_resolution_clock::now();
 		randomized_quicksort_with_x(myvector, 0, mysize-1, i + 1);
-		auto stop = high_resolution_clock::now();
-		mytime[i] = ((double) (end_function - start_function)) / CLOCKS_PER_SEC;
+		auto stop = std::chrono::high_resolution_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+		mytime[i - 1] = duration.count();	
 	}
 
 	return mytime;
 }
-*/
+//in this metodh
+
 int 
 main()
 {
@@ -183,8 +200,9 @@ main()
 	double *mytime = NULL;
 	myvector = int_init(mysize);
 	generatemyvector(myvector, mysize);
+	double *total_time;
 	//randomized_quicksort_with_x(myvector, 0, mysize-1, 10);
-	mytime = measuring_time(myvector, mysize, &total_time);
+	mytime = measuring_time(myvector, mysize);
 	showmyresults(mytime, 100);
 	int_finish(myvector);
 	double_finish(mytime);
