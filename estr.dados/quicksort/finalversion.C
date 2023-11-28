@@ -49,6 +49,15 @@ generatemyvector(int *myvector, int mysize)
 	}	
 }
 
+void
+copyvector(int *origin, int *destyne, int size)
+{
+	for(int i = 0; i < size; i++)
+	{
+		destyne[i] = origin[i];
+	}
+}
+
 
 //the first question
 
@@ -135,10 +144,13 @@ measuring_time(int *myvector, int mysize)
 {
 	double *mytime = NULL;
 	mytime = double_init(100);
+	int *temporaryvector = NULL;
+	temporaryvector = int_init(mysize);
 	for(int i = 0; i <= 100; i++)
 	{	
+		copyvector(myvector, temporaryvector, mysize);
 		auto start = std::chrono::high_resolution_clock::now();
-		randomized_quicksort_with_x(myvector, 0, mysize-1, i + 1);
+		randomized_quicksort_with_x(temporaryvector, 0, mysize-1, i + 1);
 		auto stop = std::chrono::high_resolution_clock::now();
 		auto  duration = std::chrono::duration<double>(stop - start);
 		mytime[i] = duration.count();	
@@ -158,7 +170,7 @@ showmyresults(double *myvector, int mysize)
 	double thebest = myvector[0];
 	int index = 0;
 	
-
+	
 	for(int i = 0; i < mysize; i++)
 	{
 		if(i > 0)
