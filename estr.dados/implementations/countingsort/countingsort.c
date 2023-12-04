@@ -84,7 +84,7 @@ countingsort(int *vector, int size)
 	for(int i = 0; i < size; i++)
 	{
 		outputvector[countvector[vector[i]] - 1] = vector[i];
-		countvector[i] -= 1;
+		countvector[vector[i]] -= 1;
 	}	
 	
 	for(int i = 0; i < size; i++)

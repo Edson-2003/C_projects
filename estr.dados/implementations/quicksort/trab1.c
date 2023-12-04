@@ -110,6 +110,8 @@ randomized_partition(int *myvector, int low, int high)
 	int randon = low + rand() % high - low;
 	swap(&myvector[randon], &myvector[low]);
 	
+
+	//inverter low,high
 	return partition(myvector, high, low);
 }
 
