@@ -30,7 +30,7 @@ struct node*
 createnode(int value)
 {
 	struct node *mynode = NULL;
-	*mynode = (struct node*) malloc(sizeof(struct node));
+	mynode = (struct node*) malloc(sizeof(struct node));
 	mynode->value = value;
 	mynode->next = NULL;
 	
