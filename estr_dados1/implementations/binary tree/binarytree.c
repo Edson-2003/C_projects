@@ -8,6 +8,17 @@ struct node
   struct node *left;
 };
 
+struct tree
+{
+  struct node *root;
+};
+
+struct tree*
+
+
+
+
+
 
 int
 main()

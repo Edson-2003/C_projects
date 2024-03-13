@@ -2,7 +2,8 @@
 #include <stdlib.h>
 
 
-int mylen(char *str)
+int
+mylen(char *str)
 {
   int i = 0; 
   while(str[i] != '\0')
@@ -13,7 +14,8 @@ int mylen(char *str)
   return i - 1;
 }
 
-int mypow(int base, int exponent)
+int
+mypow(int base, int exponent)
 {
   if(exponent == 1)
   {
@@ -34,7 +36,8 @@ int mypow(int base, int exponent)
   return exp;
 };
 
-int myatoi(char *str)
+int
+myatoi(char *str)
 {
   int len = mylen(str);
   int integer = 0;
@@ -48,19 +51,11 @@ int myatoi(char *str)
   }
   printf("%d", integer);
   return integer;
-
 }
-
-
-
-
 
 int main(int argc, char **argv)
 {
 
   int i = myatoi(argv[1]);
   return 0;
-
 }
-
-
