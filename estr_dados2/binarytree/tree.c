@@ -17,7 +17,7 @@ struct tree
 struct node*
 create_node(int key)
 {
-  struct node new;
+  struct node *new;
   new = (struct node *) malloc(sizeof(struct node));
   new->p = NULL;
   new->left = NULL;
@@ -43,7 +43,7 @@ insert_tree(struct node *root, int key)
   if(root == NULL)
   {
     struct node *new;
-    new = createnode(key);
+    new = create_node(key);
     root = new;
     return;
   }
@@ -55,7 +55,7 @@ insert_tree(struct node *root, int key)
   }
   
   struct node *new;
-  new = createnode(key);
+  new = create_node(key);
   new->p = root;
   root->right = new;
 }
@@ -67,7 +67,7 @@ inorder_walk(struct node *root)
   if(root != NULL)
   {
     inorder_walk(root->left);
-    print("%d ", root->key);
+    printf("%d ", root->key);
     inorder_walk(root->right);
   }
 }
@@ -75,6 +75,15 @@ inorder_walk(struct node *root)
 int
 main()
 {
-  
+  struct tree *new = create_tree();
+  for(int i = 5; i < 10; i++)
+  {
+    insert_tree(new->root, i);
+  }
+  for(int i = 0; i < 5; i++)
+  {
+    insert_tree(new->root, i);
+  }
+  inorder_walk(new->root);
   return 0;
 }

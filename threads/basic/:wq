@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <pthread.h>
+
+pthread_t t;
+
+void
+tarefa(int *value)
+{
+  printf("%d thread", id);
+}
+
+
+
+
+int main()
+{
+  int i = 0;
+  pthread_create(&t, NULL, (void*) tarefa, (void **) &i);
+  
+
+  pthread_join(t, NULL);
+  
+
+  return 0;
+}

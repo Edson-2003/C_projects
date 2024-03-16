@@ -6,10 +6,18 @@
 
 #include <netinet/in.h>
 
+struct client
+{
+  int 
+};
+
+
+
+
 int
 main()
 {
-  char message[256] = "hello word";
+  char message[256] = "hello form server";
 
   //create socket
   int s_sock;
