@@ -1,65 +1,42 @@
-#include "client.h"
-
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#include <pthread.h>
+int main() {
+    int n_socket;
+    n_socket = socket(AF_INET, SOCK_STREAM, 0);
 
+    struct sockaddr_in s_address;
+    s_address.sin_family = AF_INET;
+    s_address.sin_port = htons(9002);
+    s_address.sin_addr.s_addr = INADDR_ANY; // IP address of the server
 
-void show_menu()
-{
-  printf("\nMenu:\n");
-  printf("1. Insert category\n");
-  printf("2. Insert item\n");
-  printf("3. update category\n");
-  printf("4. update item\n");
-  printf("5. delet category\n");
-  printf("6. delet item\n");
-  printf("7. show all items\n");
-  printf("8. check-out\n");
-}
+    int status;
+    status = connect(n_socket, (struct sockaddr*) &s_address, sizeof(s_address));
 
-void global(int address)
-{
-  show_menu();
-  int option;
-  scanf("%d", &option);
-  char *buffer;
-  int size = 256;
-  buffer = (char *) malloc(size * sizeof(char));
-  switch (buffer)
-  {
-    case 1:
-      printf("write the id");
-      getline(&buffer , sizeof(buffer), stdin);
-      sts(address, buffer)
-      break;
-    case 2:
-      insert_product();
-      break;
-    case 3:
-      update_category();
-      break;
-    case 4:
-      update_product();
-      break;
-    case 5:
-      delet_category();
-      break;
-    case 6:
-      delet_products();
-      break;
-    case 7:
-      send_products(client->address);
-      break;
-    case 8:
-      return;
-      break;
-  default:
-    return;
-  }
+    if (status == -1) {
+        printf("error\n\n");
+        return 1;
+    }
+
+    char buffer;
+    recv(n_socket, &buffer, sizeof(buffer), 0);
+    while (buffer != 5) {
+        recv(n_socket, &buffer, sizeof(buffer), 0);
+    }
+    buffer = 5;
+    send(n_socket, &buffer, sizeof(buffer), 0);
+    while (buffer != 2) {
+        recv(n_socket, &buffer, sizeof(buffer), 0);
+    }
+
+    while (buffer != 4) {
+        recv(n_socket, &buffer, sizeof(buffer), 0);
+        printf("%c", buffer);
+    }
+    close(n_socket);
+
+    return 0;
 }

@@ -6,54 +6,35 @@
 #include <netinet/in.h>
 
 #include <pthread.h>
+#define size 10
 
-struct client()
+int stack[size];
+int top = 0;
+
+
+
+int
+start(int address)
 {
-  int id;
-  int address;
-}
-
-struct myclients
-{
-  int max;
-  int top;
-  struct client *clients;
-}
-
-
-struct client*
-new_client(int id, int address)
-{
-  struct client *new;
-  new = (struct client*) malloc(sizeof(struct client));
-  new->id = id;
-  new->address = address;
-
-  return new;
-}
-
-void add_client(struct myclients *clients, struct client *new)
-{
-  clients->clients[top] = new;
-  top++
-}
-
-int start(int address)
-{
-  char buffer = 5;
-  send(address, &buffer, sizeof(buffer), 0);
-  reciv(address, &buffer, sizeof(buffer), 0)
-  if(buffer == 6)
+  char buffer;
+  buffer = 5;
+  send(address, buffer, sizeof(buffer), 0);
+  recv(address, &buffer, sizeof(buffer), 0);
+  while(buffer != 6)
   {
-    return 1;
+    recv(address, &buffer, sizeof(buffer), 0);
+    printf("waitingh connections");
   }
-  return 0;
+  buffer = 2;
+  send(address, buffer, sizeof(buffer), 0);
+  return 1;
 }
 
-void send_products(int address)
+void
+send_products(int address)
 {
   FILE *fp;
-  char file = "products.csv"
+  char file = "products.txt";
   fp = fopen(file, "r");
   //printf("Content-type: text/html");  
   if(start(address))
@@ -63,77 +44,43 @@ void send_products(int address)
     {
       if(buffer == ";")
       {
-        buffer = "\t"
+        buffer = "\t";
         send(address, buffer, sizeof(buffer),0);
         buffer = 31;
-        while(!start(address))
-        {}
       }
       //buffer = fgetc(fp);
       send(address, buffer, sizeof(buffer),0);
-      //printf("%c" , buffer);
-      while(!start(address))
-      {}
     }
+    buffer = 4;
+    send(address, buffer, sizeof(buffer),0);
   }
   fclose(fp);
   return;
 }
-
-
-void routine(struct client *client)
+int
+main()
 {
-  while(true)
-  {
-    int buffer = 8;
-    recv(client->address, &buffer, sizeof(buffer), 0);
-    switch (buffer)
-    {
-    case 1:
-      insert_category();
-      break;
-    case 2:
-      insert_product();
-      break;
-    case 3:
-      update_category();
-      break;
-    case 4:
-      update_product();
-      break;
-    case 5:
-      delet_category();
-      break;
-    case 6:
-      delet_products();
-      break;
-    case 7:
-      send_products(client->address);
-      break;
-    case 8:
-      return;
-      break;
-  default:
-    }
-  }
+
+  //create socket
+  int s_sock;
+  s_sock = socket(AF_INET, SOCK_STREAM, 0);
+
+
+  //server address
+  struct sockaddr_in s_address;
+  s_address.sin_family = AF_INET;
+  s_address.sin_port = htons(9002);
+  s_address.sin_addr.s_addr = INADDR_ANY;
+
+  //bind
+  bind(s_sock, (struct sockaddr*) &s_address, sizeof(s_address));
+
+  listen(s_sock, 5);
+  int c_sock;
+  c_sock = accept(s_sock, NULL, NULL);
+
+  send_products(c_sock);
+
+  close(s_sock);
+  return 0;
 }
-
-
-
-void routine_creator(pthread_t *thread, struct client *client)
-{
-  pthread_create(&thread, NULL, (void *) routine, client);
-}
-
-void global(struct myclients *clients)
-{
-  while(true)
-  {
-    int new;
-    new = accept(s_sock, NULL, NULL);
-    add_client(clients, new_client(clients->top, new));
-    routine(&threads[clients->top - 1], clients->clients[clients->top - 1]);    
-  }
-}
-
-
