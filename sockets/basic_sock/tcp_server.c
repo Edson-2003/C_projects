@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <unistd.h>
+
 #include <sys/types.h>
 #include <sys/socket.h>
 
@@ -25,12 +27,23 @@ main()
   //bind
   bind(s_sock, (struct sockaddr*) &s_address, sizeof(s_address));
 
-  listen(s_sock, 5);
+
+
+
+  listen(s_sock, 5); 
+
   int c_sock;
-  c_sock = accept(s_sock, NULL, NULL);
-
-  send(c_sock, message, sizeof(message), 0);
-
+  socklen_t len = sizeof(struct sockaddr);
+  c_sock = accept(s_sock,(struct sockaddr *)&s_address , &len);
+  
+  printf("%d \n", c_sock);
+  char buffer[1024];
+  recv(c_sock, buffer, 1024 * sizeof(char), 0);
+  send(c_sock, buffer, 1024 * sizeof(char), 0);
+  printf("%s \n", buffer);
+  
+  
+  shutdown(s_sock, SHUT_RDWR);
   close(s_sock);
   return 0;
 }

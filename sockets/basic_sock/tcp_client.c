@@ -31,8 +31,8 @@ main()
   }
   
   //recive data from the server
-  char response[256];
-  recv(n_socket, &response, sizeof(response), 0);
+  char response[256] = "teste";
+  send(n_socket, &response, sizeof(response), 0);
 
 
   printf("response: %s \n\n", response);
