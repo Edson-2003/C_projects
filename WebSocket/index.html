@@ -1,0 +1,28 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<title>API</title>
+</head>
+<body>
+  <output></output>
+  <input type="text">
+
+  <script>
+    const conn = new Socket;
+
+// access Adobe's home page
+    if (conn.open ("127.0.0.1:9002")) 
+    {
+
+    // send a HTTP GET request
+    //conn.write ("GET /index.html HTTP/1.0\n\n");
+
+    // and read the server's reply
+    //reply = conn.read(999999);
+
+      conn.close();
+    }
+  </script>
+</body>
+</html> 
+
