@@ -246,11 +246,6 @@ sendrooms(int fd)
     send(fd, &temp->name, 50 * sizeof(char), 0);
     temp = temp->next;
   } 
-  :wq
-  :wq
-  :qw
-  :q
-  :q
   pthread_rwlock_unlock(&rw);
   buffer[0] = 0x00;
   send(fd, &buffer[0], sizeof(char), 0);
